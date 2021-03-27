@@ -1,5 +1,3 @@
-require('dotenv').config()
+require("dotenv").config();
 
-import {start} from './server'
-
-start()
+require("./server").start();
