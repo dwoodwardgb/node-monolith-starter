@@ -9,11 +9,12 @@
   },
   "scripts": {
     "_clean": "rimraf dist",
-    "build": "yarn _clean && tsc",
-    "start": "node -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
     "_tsc:watch": "tsc -w",
-    "_nodemon": "nodemon -w dist -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
-    "dev": "yarn build && NODE_ENV=development concurrently -k --raw \"yarn _tsc:watch\" \"yarn _nodemon\""
+    "_nodemon": "nodemon -q -w dist -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
+    "build": "yarn _clean && tsc",
+    "dev": "yarn build && NODE_ENV=development concurrently -k --raw \"yarn _tsc:watch\" \"yarn _nodemon\"",
+    "start": "node -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
+    "typeorm": "yarn build && typeorm -f dist/db/ormconfig.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

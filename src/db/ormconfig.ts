@@ -20,10 +20,10 @@ const base: ConfigType = {
   url: process.env.DATABASE_URL,
   synchronize: false,
   cli: {
-    migrationsDir: "dist/migrations",
+    migrationsDir: "src/db/migrations",
   },
   entities: ["dist/**/*-entity.js"],
-  migrations: ["dist/migrations/**/*.js"],
+  migrations: ["dist/db/migrations/**/*.js"],
 };
 
 const environments: Record<string, ConfigType> = {
