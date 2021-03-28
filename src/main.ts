@@ -1,3 +1,3 @@
-require("dotenv").config();
+import * as Server from "./server";
 
-require("./server").start();
+Server.start();

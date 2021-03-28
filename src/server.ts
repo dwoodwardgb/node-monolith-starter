@@ -9,5 +9,7 @@ export const start = async () => {
   const db = await connect();
   app.use(...createMiddleware(db));
   app.use(router);
-  app.listen(process.env.PORT);
+  app.listen(process.env.PORT, () => {
+    console.log(process.env.NODE_ENV, process.env.PORT);
+  });
 };

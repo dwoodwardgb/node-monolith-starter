@@ -1,4 +1,4 @@
-export default (db) => (req, res, next) => {
+export const createDbMiddleware = (db) => (req, res, next) => {
   req.db = db;
   next();
 };

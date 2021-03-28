@@ -1,4 +1,4 @@
-export const createMiddleware = (db) => [
-  require("./db-middleware")(db),
-  require("./logger-middleware"),
-];
+import logger from "./logger-middleware";
+import { createDbMiddleware } from "./db-middleware";
+
+export const createMiddleware = (db) => [createDbMiddleware(db), logger];

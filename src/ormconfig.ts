@@ -5,6 +5,7 @@
  * production and which are for development
  */
 
+import { ConnectionOptions } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
 // super spicy TS magic from SO https://stackoverflow.com/questions/42214743/declare-a-clone-function-to-make-readonly-properties-writable-in-typescript
@@ -19,10 +20,10 @@ const base: ConfigType = {
   url: process.env.DATABASE_URL,
   synchronize: false,
   cli: {
-    migrationsDir: "src/migrations",
+    migrationsDir: "dist/migrations",
   },
-  entities: ["src/**/*-entity.ts"],
-  migrations: ["src/migrations/**/*.ts"],
+  entities: ["dist/**/*-entity.js"],
+  migrations: ["dist/migrations/**/*.js"],
 };
 
 const environments: Record<string, ConfigType> = {
@@ -39,7 +40,7 @@ const environments: Record<string, ConfigType> = {
 
 const env = process.env.NODE_ENV || "development";
 
-export default {
+export default <ConnectionOptions>{
   ...base,
   ...environments[env],
 };
