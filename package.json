@@ -8,13 +8,15 @@
     "yarn": "1.x"
   },
   "scripts": {
-    "_clean": "rimraf dist",
-    "_tsc:watch": "tsc -w",
+    "_build:css": "rimraf public/stylesheets && postcss stylesheets --dir public/stylesheets",
+    "_build:js": "rimraf dist && tsc",
+    "_watch:css": "postcss stylesheets --dir public/stylesheets --watch",
+    "_watch:js": "tsc -w",
     "_nodemon": "nodemon -q -w dist -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
-    "build": "yarn _clean && tsc",
-    "dev": "yarn build && NODE_ENV=development concurrently -k --raw \"yarn _tsc:watch\" \"yarn _nodemon\"",
+    "build": "concurrently --raw \"yarn _build:css\" \"yarn _build:js\"",
+    "dev": "yarn build && NODE_ENV=development concurrently -k --raw \"yarn _watch:css\" \"yarn _watch:js\" \"yarn _nodemon\"",
     "start": "node -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
-    "typeorm": "yarn build && typeorm -f dist/db/ormconfig.js"
+    "typeorm": "yarn _build:js && typeorm -f dist/db/ormconfig.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
@@ -25,9 +27,15 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
+    "autoprefixer": "^10.2.5",
     "concurrently": "^6.0.0",
+    "cssnano": "^4.1.10",
     "nodemon": "^2.0.7",
+    "postcss": "^8.2.8",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.0",
     "rimraf": "^3.0.2",
+    "tailwindcss": "^2.0.4",
     "typescript": "^4.2.3"
   }
 }
