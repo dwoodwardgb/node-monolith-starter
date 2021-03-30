@@ -1,7 +1,7 @@
 {
-  "name": "node-on-rails",
+  "name": "node-monolith-starter",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/main.js",
   "license": "MIT",
   "engines": {
     "node": "14.x",
@@ -19,14 +19,27 @@
     "typeorm": "yarn _build:js && typeorm -f dist/db/ormconfig.js"
   },
   "dependencies": {
+    "csurf": "^1.11.0",
     "dotenv": "^8.2.0",
+    "escape-html": "^1.0.3",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "helmet": "^4.4.1",
+    "passport": "^0.4.1",
+    "passport-auth0": "^1.4.0",
     "pg": "^8.5.1",
+    "querystring": "^0.2.1",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^8.140.0",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
+    "@types/csurf": "^1.11.0",
+    "@types/escape-html": "^1.0.0",
     "@types/express": "^4.17.11",
+    "@types/express-session": "^1.17.3",
+    "@types/node": "^14.14.37",
+    "@types/passport-auth0": "^1.0.4",
     "autoprefixer": "^10.2.5",
     "concurrently": "^6.0.0",
     "cssnano": "^4.1.10",
