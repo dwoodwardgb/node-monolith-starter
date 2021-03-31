@@ -27,11 +27,11 @@ export default function layout(
       <head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="theme-color" content="#000000" />
-        <meta name="description" content="In home chef service" />
+        <meta name="description" content="Node monolith starter" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charset="UTF-8" />
-        <title>Gomë</title>
+        <title>Node Monolith Starter</title>
 
         ${stylesheets.map((s) => html`<link rel="stylesheet" href="${s}" />`)}
 
