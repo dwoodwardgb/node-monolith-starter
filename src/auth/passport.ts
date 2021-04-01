@@ -1,5 +1,6 @@
 import { Connection } from "typeorm";
 import passport from "passport";
+import { createStrategy } from "./auth0-strategy";
 
 export const passportMiddleware = [passport.initialize(), passport.session()];
 
@@ -12,5 +13,5 @@ export const initializePassport = (db: Connection) => {
     done(null, user);
   });
 
-  // TODO setup strategy, connect to user service, add auth-controller
+  passport.use(createStrategy(db));
 };

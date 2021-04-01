@@ -4,16 +4,17 @@ import { connect } from "./db";
 import { createMiddleware } from "./middleware";
 import router from "./routes";
 
-const app = express();
+const server = express();
 
 export const start = async () => {
   const db = await connect();
 
   initializePassport(db);
 
-  app.use(...createMiddleware(db));
-  app.use(router);
-  app.listen(process.env.PORT, () => {
+  server.use(...createMiddleware(db));
+  server.use(router);
+
+  server.listen(process.env.PORT, () => {
     console.log(process.env.NODE_ENV, process.env.PORT);
   });
 };
