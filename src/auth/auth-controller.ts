@@ -5,6 +5,10 @@ import querystring from "querystring";
 
 const router = Router();
 
+// magic copy pasta from https://auth0.com/blog/create-a-simple-and-secure-node-express-app/
+// I promise it works
+// TODO make it fit in our heads a bit better?
+
 router.get(
   "/login",
   passport.authenticate("auth0", {
@@ -37,9 +41,6 @@ router.get("/auth0webhook", (req, res, next) => {
 router.get("/logout", (req, res) => {
   req.logOut();
 
-  // magic copy pasta from https://auth0.com/blog/create-a-simple-and-secure-node-express-app/?_ga=2.241731906.1963045546.1616463676-475429510.1616463675
-  // I promise it works
-  // TODO make it fit in our heads a bit better?
   let returnTo = req.protocol + "://" + req.hostname;
   const port = req.connection.localPort;
 

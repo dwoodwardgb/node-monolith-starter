@@ -1,4 +1,4 @@
-import { array, object, string, size, mask } from "superstruct";
+import { array, object, string, size } from "superstruct";
 
 // TODO: refactor out a nonEmptyString helper (same goes for spec)
 export default object({
