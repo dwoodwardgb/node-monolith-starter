@@ -14,13 +14,13 @@ router.get(
   passport.authenticate("auth0", {
     scope: "openid email profile",
   }),
-  (req, res) => {
+  function login(req, res) {
     res.redirect("/");
   }
 );
 
 router.get("/auth0webhook", (req, res, next) => {
-  passport.authenticate("auth0", (err, user, info) => {
+  passport.authenticate("auth0", function auth0Webhook(err, user, info) {
     if (err) {
       return next(err);
     }
@@ -38,7 +38,7 @@ router.get("/auth0webhook", (req, res, next) => {
   })(req, res, next);
 });
 
-router.get("/logout", (req, res) => {
+router.get("/logout", function logout(req, res) {
   req.logOut();
 
   let returnTo = req.protocol + "://" + req.hostname;

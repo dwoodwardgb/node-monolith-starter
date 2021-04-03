@@ -1,7 +1,7 @@
 import { Connection, Repository } from "typeorm";
 import { Profile, User } from "./user-entity";
 
-const findByAuth0Id = async (users: Repository<User>, auth0Id: string) => {
+async function findByAuth0Id(users: Repository<User>, auth0Id: string) {
   if (!auth0Id) {
     throw new Error();
   }
@@ -9,16 +9,16 @@ const findByAuth0Id = async (users: Repository<User>, auth0Id: string) => {
   return await users.findOne({
     where: { profile: { auth0Id: auth0Id } },
   });
-};
+}
 
-const createUserFromProfile = async (
+async function createUserFromProfile(
   users: Repository<User>,
   profile: Profile
-) => {
+) {
   return await users.save({ profile });
-};
+}
 
-export const upsertUserByProfile = async (db: Connection, profile: Profile) => {
+export async function upsertUserByProfile(db: Connection, profile: Profile) {
   const users = db.getRepository(User);
 
   let user = await findByAuth0Id(users, profile.auth0Id);
@@ -26,4 +26,4 @@ export const upsertUserByProfile = async (db: Connection, profile: Profile) => {
     user = await createUserFromProfile(users, profile);
   }
   return user;
-};
+}

@@ -7,15 +7,15 @@ class EscapedString {
   }
 }
 
-const renderLeaf = (leaf: EscapedString | any) => {
+function renderLeaf(leaf: EscapedString | any) {
   if (leaf instanceof EscapedString) {
     return leaf.toString();
   } else {
     return escapeHtml("" + leaf);
   }
-};
+}
 
-export const html = (outer: TemplateStringsArray, ...inner) => {
+export function html(outer: TemplateStringsArray, ...inner) {
   let result = "";
   let outerIndex = 0;
   let innerIndex = 0;
@@ -34,6 +34,8 @@ export const html = (outer: TemplateStringsArray, ...inner) => {
     }
   }
   return new EscapedString(result);
-};
+}
 
-export const renderHtml = (html) => html.toString();
+export function renderHtml(html) {
+  return html.toString();
+}

@@ -5,10 +5,11 @@ import helmet from "helmet";
 import logger from "./logger-middleware";
 import { createDbMiddleware } from "./db-middleware";
 import { passportMiddleware } from "../auth/passport";
+import { Connection } from "typeorm";
 
 const isProd = process.env.NODE_ENV === "production";
 
-export const createMiddleware = (db) => [
+export const createMiddleware = (db: Connection) => [
   helmet(),
   createDbMiddleware(db),
   logger,

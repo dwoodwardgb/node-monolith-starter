@@ -6,7 +6,7 @@ import router from "./routes";
 
 const server = express();
 
-export const start = async () => {
+export async function start() {
   const db = await connect();
 
   initializePassport(db);
@@ -17,4 +17,4 @@ export const start = async () => {
   server.listen(process.env.PORT, () => {
     console.log(process.env.NODE_ENV, process.env.PORT);
   });
-};
+}
