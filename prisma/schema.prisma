@@ -1,0 +1,90 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  userId    String   @id @default(uuid())
+  nickname  String
+  auth0Id   String
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders        Order[]
+  addresses     Address[]
+  userAddresses UserAddress[]
+
+  @@unique([auth0Id, email])
+}
+
+model Address {
+  addressId   String   @id @default(uuid())
+  street1     String
+  street2     String
+  city        String
+  stateCode   String
+  postalCode  String
+  countryCode String
+  createdAt   DateTime @default(now())
+
+  orders        Order[]
+  users         User[]
+  userAddresses UserAddress[]
+
+  @@unique([street1, street2, city, stateCode, postalCode, countryCode])
+}
+
+model UserAddress {
+  userId    String
+  user      User    @relation(fields: [userId], references: [userId])
+  addressId String
+  address   Address @relation(fields: [addressId], references: [addressId])
+
+  @@id([userId, addressId])
+}
+
+model Item {
+  itemId       String   @id @default(uuid())
+  name         String
+  description  String
+  priceInCents Int
+  quantity     Int
+  status       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders     Order[]
+  orderItems OrderItem[]
+
+  @@index([status])
+}
+
+model Order {
+  orderId   String   @id @default(uuid())
+  userId    String
+  addressId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [userId])
+  address    Address     @relation(fields: [addressId], references: [addressId])
+  items      Item[]
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  itemId       String
+  orderId      String
+  priceInCents Int
+  quantity     Int
+
+  item  Item  @relation(fields: [itemId], references: [itemId])
+  order Order @relation(fields: [orderId], references: [orderId])
+
+  @@id([itemId, orderId])
+}

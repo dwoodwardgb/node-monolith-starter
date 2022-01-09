@@ -1,20 +1,44 @@
-import express from "express";
-import { initializePassport } from "./auth/passport";
-import { connect } from "./db";
-import { createMiddleware } from "./middleware";
-import router from "./routes";
+import fastify from "fastify";
+import * as di from "awilix";
+import fastifySecureSession from "fastify-secure-session";
+import path from "path";
+import fs from "fs";
+import fastifyBlipp from "fastify-blipp";
 
-const server = express();
+const diContainer = di.createContainer();
 
-export async function start() {
-  const db = await connect();
+diContainer.loadModules(
+  [
+    "./auth/authPlugin.js",
+    "./db.js",
+    "./auth/onUserAuthenticated.js",
+    "./home/homePlugin.js",
+    "./profile/profilePlugin.js",
+  ],
+  {
+    cwd: __dirname,
+  }
+);
 
-  initializePassport(db);
+const server = fastify({ logger: { level: "debug" } });
 
-  server.use(...createMiddleware(db));
-  server.use(router);
+server.register(fastifyBlipp);
 
-  server.listen(process.env.PORT, () => {
-    console.log(process.env.NODE_ENV, process.env.PORT);
-  });
+server.register(fastifySecureSession, {
+  key: fs.readFileSync(path.join(__dirname, "..", "session-secret-key")),
+});
+
+export async function startServer() {
+  const { homePlugin, authPlugin, profilePlugin } = diContainer.cradle;
+  server.register(homePlugin);
+  server.register(authPlugin);
+  server.register(profilePlugin, { prefix: "/profile" });
+
+  try {
+    await server.listen(3000);
+    server.blipp();
+  } catch (err) {
+    server.log.error(err);
+    process.exit(1);
+  }
 }

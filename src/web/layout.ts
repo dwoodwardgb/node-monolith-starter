@@ -13,13 +13,15 @@ type scriptSpec =
 
 export default function layout(
   {
+    isAuthenticated,
     stylesheets = [],
     scripts = [],
   }: {
+    isAuthenticated?: boolean;
     stylesheets?: string[];
     scripts?: scriptSpec[];
   },
-  main
+  main: unknown
 ) {
   return html`
     <!DOCTYPE html>
@@ -33,9 +35,12 @@ export default function layout(
         <meta charset="UTF-8" />
         <title>Node Monolith Starter</title>
 
+        <link
+          href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+          rel="stylesheet"
+        />
         ${stylesheets.map((s) => html`<link rel="stylesheet" href="${s}" />`)}
-
-        <link rel="stylesheet" href="/stylesheets/main.css" />
+        <!-- <link rel="stylesheet" href="/stylesheets/main.css" /> -->
 
         ${scripts.map((s) =>
           typeof s === "string"
@@ -45,10 +50,32 @@ export default function layout(
             : html`<script src="${s.src}" defer></script>`
         )}
       </head>
-      <body>
-        <header>Header</header>
-        <main>${main}</main>
-        <footer>Footer</footer>
+      <body class="p-4 space-y-4">
+        <header>
+          <nav>
+            <ul class="flex flex-row space-x-4">
+              <li class="border-black border-b-2 border-dashed">
+                <a href="/">Home</a>
+              </li>
+              ${isAuthenticated
+                ? html`
+                    <li class="border-black border-b-2 border-dashed">
+                      <a href="/profile">Profile</a>
+                    </li>
+                    <li class="border-black border-b-2 border-dashed">
+                      <a href="/logout">Logout</a>
+                    </li>
+                  `
+                : html`
+                    <li class="border-black border-b-2 border-dashed">
+                      <a href="/login">Login</a>
+                    </li>
+                  `}
+            </ul>
+          </nav>
+        </header>
+        <main class="space-y-4">${main}</main>
+        <!-- <footer>Footer</footer> -->
       </body>
     </html>
   `;
