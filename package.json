@@ -11,14 +11,13 @@
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
-    "awilix": "^5.0.1",
+    "awilix": "^6.0.0",
     "dotenv": "^10.0.0",
     "escape-html": "^1.0.3",
     "fastify": "^3.21.6",
     "fastify-blipp": "^3.1.0",
-    "fastify-oauth2": "^4.2.3",
     "fastify-plugin": "^3.0.0",
-    "fastify-secure-session": "^2.3.1",
+    "fastify-secure-session": "^3.0.0",
     "jwt-decode": "^3.1.2",
     "qs": "^6.10.1"
   },
@@ -28,9 +27,9 @@
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^14.0.0",
     "@types/qs": "^6.9.7",
-    "concurrently": "^6.3.0",
+    "concurrently": "^7.0.0",
     "nodemon": "^2.0.13",
-    "prisma": "3.1.1",
+    "prisma": "3.7.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
   }

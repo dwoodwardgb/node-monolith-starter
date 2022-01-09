@@ -1,6 +1,10 @@
-[ ] Get a server running
-[ ] Setup some testing practices (preferably efficient ones)
-[ ] Deploy to Heroku
-[ ] Document process for setting up integrations like stripe and auth0
-[ ] Add view layer
-[ ] Actually build out functionality
+- prisma
+- dotenv
+- tsc
+- awilix
+- dev server
+- tailwind
+- views
+- auth0
+- stripe
+- testing
