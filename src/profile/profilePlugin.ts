@@ -1,9 +1,13 @@
 import { FastifyInstance } from "fastify";
 import * as di from "awilix";
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient, User } from ".prisma/client";
+
 import { html, renderHtml } from "../web/html";
 import layout from "../web/layout";
-import { ensureAuthenticatedGuard } from "../auth/authPlugin";
+import {
+  ensureAuthenticatedGuard,
+  USER_SESSION_FIELD_NAME,
+} from "../auth/authPlugin";
 
 const createProfilePlugin =
   ({ db }: { db: PrismaClient }) =>
@@ -14,11 +18,7 @@ const createProfilePlugin =
         preHandler: ensureAuthenticatedGuard,
       },
       async (request, reply) => {
-        const { userId } = request.session.get("user");
-        const user = await db.user.findUnique({
-          where: { userId },
-          include: { addresses: true },
-        });
+        const user = <User>request.session.get(USER_SESSION_FIELD_NAME);
         reply.type("text/html").send(
           renderHtml(
             layout(
@@ -27,14 +27,6 @@ const createProfilePlugin =
                 <section>
                   <h1>Profile for ${user.nickname}</h1>
                   <div>email: ${user.email}</div>
-                  ${user.addresses.length > 0
-                    ? html`<section>
-                        <h2>Addresses</h2>
-                        <ul>
-                          ${user.addresses.map((a) => html`<li>${a.city}</li>`)}
-                        </ul>
-                      </section>`
-                    : ""}
                 </section>
               `
             )

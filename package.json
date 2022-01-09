@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
+    "@sinclair/typebox": "^0.23.2",
     "awilix": "^6.0.0",
     "dotenv": "^10.0.0",
     "escape-html": "^1.0.3",
@@ -19,14 +20,15 @@
     "fastify-plugin": "^3.0.0",
     "fastify-secure-session": "^3.0.0",
     "jwt-decode": "^3.1.2",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "simple-oauth2": "^4.3.0"
   },
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.1",
+    "@tsconfig/node16": "^1.0.1",
     "@types/escape-html": "^1.0.1",
-    "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^14.0.0",
     "@types/qs": "^6.9.7",
+    "@types/simple-oauth2": "^4.1.1",
     "concurrently": "^7.0.0",
     "nodemon": "^2.0.13",
     "prisma": "3.7.0",

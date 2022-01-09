@@ -1,21 +1,16 @@
 import * as di from "awilix";
 import { FastifyReply, FastifyRequest } from "fastify";
 import createFastifyPlugin from "fastify-plugin";
-import fastifyOauth2, { OAuth2Namespace, OAuth2Token } from "fastify-oauth2";
-import decodeJwt from "jwt-decode";
+import { AuthorizationCode } from "simple-oauth2";
 import qs from "qs";
+import { Static, Type } from "@sinclair/typebox";
+import decodeJwt from "jwt-decode";
+
 import { OnUserAuthenticated } from "./onUserAuthenticated";
-
-declare module "fastify" {
-  interface FastifyInstance {
-    auth0: OAuth2Namespace;
-  }
-}
-
-type Auth0Token = { id_token: string } & OAuth2Token;
 
 const DEFAULT_REDIRECT_AFTER_LOGIN = "/";
 const LOGIN_ROUTE = "/login";
+export const USER_SESSION_FIELD_NAME = "user";
 
 const createAuthPlugin = ({
   onUserAuthenticated,
@@ -24,43 +19,63 @@ const createAuthPlugin = ({
 }) =>
   createFastifyPlugin(
     async (server, _options) => {
-      server.register(fastifyOauth2, {
-        name: "auth0",
-        credentials: {
-          client: {
-            id: process.env.AUTH0_CLIENT_ID,
-            secret: process.env.AUTH0_CLIENT_SECRET,
-          },
-          auth: {
-            authorizeHost: process.env.AUTH0_DOMAIN,
-            authorizePath: "/authorize",
-            tokenHost: process.env.AUTH0_DOMAIN,
-            tokenPath: "/oauth/token",
-          },
+      const authClient = new AuthorizationCode({
+        client: {
+          id: process.env.AUTH0_CLIENT_ID,
+          secret: process.env.AUTH0_CLIENT_SECRET,
         },
-        startRedirectPath: LOGIN_ROUTE,
-        callbackUri: process.env.AUTH0_CALLBACK_URL,
+        auth: {
+          authorizeHost: process.env.AUTH0_DOMAIN,
+          authorizePath: "/authorize",
+          tokenHost: process.env.AUTH0_DOMAIN,
+          tokenPath: "/oauth/token",
+        },
+      });
+
+      // LOGIN ---------------------------------------------------------------
+
+      const authUri = authClient.authorizeURL({
+        redirect_uri: process.env.AUTH0_CALLBACK_URL, // TODO can this be derived?
         scope: ["openid", "email", "profile"],
       });
 
-      server.get("/auth0webhook", async (request, reply) => {
-        const { id_token } = <Auth0Token>(
-          await server.auth0.getAccessTokenFromAuthorizationCodeFlow(request)
-        );
-        const user = await onUserAuthenticated(decodeJwt(id_token));
-        request.session.set("user", user);
-        const returnTo =
-          request.session.get("returnTo") || DEFAULT_REDIRECT_AFTER_LOGIN;
-        request.session.set("returnTo", undefined);
-        reply.redirect(returnTo);
+      server.get(LOGIN_ROUTE, (_request, reply) => {
+        reply.redirect(authUri);
       });
 
+      // AUTH WEBHOOK --------------------------------------------------------
+
+      const webhookQuerySchema = Type.Object({
+        code: Type.String(),
+      });
+
+      server.get<{ Querystring: Static<typeof webhookQuerySchema> }>(
+        "/auth0webhook", // TODO can this be derived?
+        { schema: { querystring: webhookQuerySchema } },
+        async (request, reply) => {
+          const {
+            token: { id_token },
+          } = await authClient.getToken({
+            code: request.query.code,
+            redirect_uri: process.env.AUTH0_CALLBACK_URL,
+          });
+          const user = await onUserAuthenticated(decodeJwt(id_token));
+          request.session.set(USER_SESSION_FIELD_NAME, user);
+          const returnTo =
+            request.session.get("returnTo") || DEFAULT_REDIRECT_AFTER_LOGIN;
+          request.session.set("returnTo", undefined);
+          reply.redirect(returnTo);
+        }
+      );
+
+      // LOGOUT ---------------------------------------------------------------
+
       server.get("/logout", async (request, reply) => {
-        request.session.set("user", undefined);
+        request.session.set(USER_SESSION_FIELD_NAME, undefined);
         reply.redirect(
           `${process.env.AUTH0_DOMAIN}/v2/logout?${qs.stringify({
             client_id: process.env.AUTH0_CLIENT_ID,
-            returnTo: "http://localhost:3000/",
+            returnTo: "http://localhost:3000/", // TODO can this be derived
           })}`
         );
       });
@@ -83,7 +98,7 @@ export async function ensureAuthenticatedGuard(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  if (!request.session.get("user")) {
+  if (!request.session.get(USER_SESSION_FIELD_NAME)) {
     request.session.set("returnTo", request.url);
     reply.redirect(LOGIN_ROUTE);
   }
