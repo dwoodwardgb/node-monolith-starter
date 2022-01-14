@@ -1,8 +1,6 @@
 import fastify from "fastify";
 import * as di from "awilix";
 import fastifySecureSession from "fastify-secure-session";
-import path from "path";
-import fs from "fs";
 import fastifyBlipp from "fastify-blipp";
 
 const diContainer = di.createContainer();
@@ -25,7 +23,7 @@ const server = fastify({ logger: { level: "debug" } });
 server.register(fastifyBlipp);
 
 server.register(fastifySecureSession, {
-  key: fs.readFileSync(path.join(__dirname, "..", "session-secret-key")),
+  key: Buffer.from(process.env.SESSION_SECRET_HEX, 'hex')
 });
 
 export async function startServer() {

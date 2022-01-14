@@ -1,7 +1,7 @@
 {
-  "name": "piper-store",
+  "name": "node-monolith-starter",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
     "_build:js": "rimraf dist && tsc",
