@@ -1,0 +1,15 @@
+TODO
+- heroku
+- dev server
+- tailwind
+- stripe
+- testing
+
+DONE
+- tsc
+- views
+- sessions
+- dotenv
+- prisma
+- auth0
+- awilix
