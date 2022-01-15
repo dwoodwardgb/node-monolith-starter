@@ -12,7 +12,7 @@
     "_nodemon": "nodemon -q -w dist -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
     "build": "yarn run _build:js",
     "dev": "concurrently -k --raw \"yarn _watch:js\" \"yarn _nodemon\"",
-    "start": "node -r dotenv/config dist/main.js"
+    "start": "node -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main.js"
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
