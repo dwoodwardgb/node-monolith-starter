@@ -33,7 +33,7 @@ export async function startServer() {
   server.register(profilePlugin, { prefix: "/profile" });
 
   try {
-    await server.listen(3000);
+    await server.listen(3000, '0.0.0.0');
     server.blipp();
   } catch (err) {
     server.log.error(err);
