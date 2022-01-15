@@ -11,9 +11,8 @@ import { OnUserAuthenticated } from "./onUserAuthenticated";
 const DEFAULT_REDIRECT_AFTER_LOGIN = "/";
 const LOGIN_ROUTE = "/login";
 const WEBHOOK_ROUTE = "/oauth/webhook";
-const WEBHOOK_URL = `${process.env.PUBLIC_URL}/${WEBHOOK_ROUTE}`;
+const WEBHOOK_URL = `${process.env.PUBLIC_URL}${WEBHOOK_ROUTE}`;
 export const USER_SESSION_FIELD_NAME = "user";
-console.log(WEBHOOK_URL, WEBHOOK_URL === 'https://fathomless-mesa-53991.herokuapp.com/oauth/webhook')
 
 const createAuthPlugin = ({
   onUserAuthenticated,
