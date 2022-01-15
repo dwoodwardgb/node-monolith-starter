@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "license": "MIT",
+  "engines": {
+    "node": "16"
+  },
   "scripts": {
     "_build:js": "rimraf dist && tsc",
     "_watch:js": "tsc -w",
