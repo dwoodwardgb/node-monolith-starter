@@ -10,6 +10,8 @@ import { OnUserAuthenticated } from "./onUserAuthenticated";
 
 const DEFAULT_REDIRECT_AFTER_LOGIN = "/";
 const LOGIN_ROUTE = "/login";
+const WEBHOOK_ROUTE = "/oauth/webhook";
+const WEBHOOK_URL = `${process.env.PUBLIC_URL}/${WEBHOOK_ROUTE}`;
 export const USER_SESSION_FIELD_NAME = "user";
 
 const createAuthPlugin = ({
@@ -35,7 +37,7 @@ const createAuthPlugin = ({
       // LOGIN ---------------------------------------------------------------
 
       const authUri = authClient.authorizeURL({
-        redirect_uri: process.env.AUTH0_CALLBACK_URL, // TODO can this be derived?
+        redirect_uri: WEBHOOK_URL, // TODO can this be derived?
         scope: ["openid", "email", "profile"],
       });
 
@@ -50,14 +52,14 @@ const createAuthPlugin = ({
       });
 
       server.get<{ Querystring: Static<typeof webhookQuerySchema> }>(
-        "/auth0webhook", // TODO can this be derived?
+        WEBHOOK_ROUTE,
         { schema: { querystring: webhookQuerySchema } },
         async (request, reply) => {
           const {
             token: { id_token },
           } = await authClient.getToken({
             code: request.query.code,
-            redirect_uri: process.env.AUTH0_CALLBACK_URL,
+            redirect_uri: WEBHOOK_URL,
           });
           const user = await onUserAuthenticated(decodeJwt(id_token));
           request.session.set(USER_SESSION_FIELD_NAME, user);
