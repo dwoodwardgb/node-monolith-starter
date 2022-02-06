@@ -1,5 +1,4 @@
 import { FastifyInstance } from "fastify";
-import * as di from "awilix";
 import { PrismaClient, User } from ".prisma/client";
 
 import { html, renderHtml } from "../web/html";
@@ -35,10 +34,5 @@ const createProfilePlugin =
       }
     );
   };
-
-createProfilePlugin[di.RESOLVER] = {
-  register: di.asFunction,
-  lifetime: di.Lifetime.SINGLETON,
-};
 
 export default createProfilePlugin;

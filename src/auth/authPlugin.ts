@@ -1,4 +1,3 @@
-import * as di from "awilix";
 import { FastifyReply, FastifyRequest } from "fastify";
 import createFastifyPlugin from "fastify-plugin";
 import { AuthorizationCode } from "simple-oauth2";
@@ -88,11 +87,6 @@ const createAuthPlugin = ({
       },
     }
   );
-
-createAuthPlugin[di.RESOLVER] = {
-  register: di.asFunction,
-  lifetime: di.Lifetime.SINGLETON,
-};
 
 export default createAuthPlugin;
 

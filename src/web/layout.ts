@@ -35,12 +35,8 @@ export default function layout(
         <meta charset="UTF-8" />
         <title>Node Monolith Starter</title>
 
-        <link
-          href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-          rel="stylesheet"
-        />
+        <link href="/public/dist/main.css" rel="stylesheet" />
         ${stylesheets.map((s) => html`<link rel="stylesheet" href="${s}" />`)}
-        <!-- <link rel="stylesheet" href="/stylesheets/main.css" /> -->
 
         ${scripts.map((s) =>
           typeof s === "string"
@@ -71,6 +67,9 @@ export default function layout(
                       <a href="/login">Login</a>
                     </li>
                   `}
+              <li class="border-black border-b-2 border-dashed">
+                <a href="/checkout">Sample Checkout</a>
+              </li>
             </ul>
           </nav>
         </header>

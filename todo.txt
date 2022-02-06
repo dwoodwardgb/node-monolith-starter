@@ -1,9 +1,8 @@
 TODO
 - heroku
-- dev server
-- tailwind
 - stripe
 - testing
+- csruf
 
 DONE
 - tsc
@@ -13,3 +12,5 @@ DONE
 - prisma
 - auth0
 - awilix
+- dev server
+- tailwind

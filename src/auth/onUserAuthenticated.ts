@@ -1,4 +1,3 @@
-import * as di from "awilix";
 import { PrismaClient } from "@prisma/client";
 
 /*
@@ -49,11 +48,6 @@ const creatOnUserAuthenticated = ({ db }: { db: PrismaClient }) =>
     }
     return user;
   };
-
-creatOnUserAuthenticated[di.RESOLVER] = {
-  register: di.asFunction,
-  lifetime: di.Lifetime.SINGLETON,
-};
 
 export type OnUserAuthenticated = ReturnType<typeof creatOnUserAuthenticated>;
 

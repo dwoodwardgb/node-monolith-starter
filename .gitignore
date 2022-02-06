@@ -3,3 +3,4 @@ node_modules
 dist
 session-secret-key
 .vscode
+.idea

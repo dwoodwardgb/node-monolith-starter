@@ -7,11 +7,13 @@
     "node": "16"
   },
   "scripts": {
+    "_build:css": "rimraf public/dist/ && tailwindcss -i stylesheets/main.css -o public/dist/main.css",
+    "_watch:css": "tailwindcss -i stylesheets/main.css -o public/dist/main.css --watch",
     "_build:js": "rimraf dist && tsc",
     "_watch:js": "tsc -w",
     "_nodemon": "nodemon -q -w dist -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
-    "build": "yarn run _build:js",
-    "dev": "concurrently -k --raw \"yarn _watch:js\" \"yarn _nodemon\"",
+    "build": "concurrently --raw \"yarn _build:js\" \"yarn _build:css\"",
+    "dev": "concurrently -k --raw \"yarn _watch:js\" \"yarn _nodemon\" \"yarn _watch:css\"",
     "start": "node -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main.js"
   },
   "dependencies": {
@@ -22,11 +24,14 @@
     "escape-html": "^1.0.3",
     "fastify": "^3.21.6",
     "fastify-blipp": "^3.1.0",
+    "fastify-formbody": "^5.2.0",
     "fastify-plugin": "^3.0.0",
     "fastify-secure-session": "^3.0.0",
+    "fastify-static": "^4.5.0",
     "jwt-decode": "^3.1.2",
     "qs": "^6.10.1",
-    "simple-oauth2": "^4.3.0"
+    "simple-oauth2": "^4.3.0",
+    "stripe": "^8.197.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.1",
@@ -36,8 +41,10 @@
     "@types/simple-oauth2": "^4.1.1",
     "concurrently": "^7.0.0",
     "nodemon": "^2.0.13",
+    "postcss": "^8.4.5",
     "prisma": "3.7.0",
     "rimraf": "^3.0.2",
+    "tailwindcss": "^3.0.15",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
   }

@@ -17,3 +17,10 @@ model User {
 
   @@unique([auth0Id, email])
 }
+
+model Payment {
+  paymentId String   @id
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
