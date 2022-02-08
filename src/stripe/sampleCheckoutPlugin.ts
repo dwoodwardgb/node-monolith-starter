@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { Static, Type } from "@sinclair/typebox";
 import { Stripe } from "stripe";
-import { PrismaClient, User } from ".prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
 import layout from "../web/layout";
 import { html, renderHtml } from "../web/html";

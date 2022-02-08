@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { PrismaClient, User } from ".prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { html, renderHtml } from "../web/html";
 import layout from "../web/layout";
 

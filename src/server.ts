@@ -28,12 +28,20 @@ diContainer.loadModules(
   }
 );
 
-const server = fastify({ logger: { level: "debug" } });
+const isProd = process.env.NODE_ENV === "production";
+const server = fastify({
+  logger: { level: isProd ? "info" : "trace", prettyPrint: !isProd },
+});
 
 server.register(fastifyBlipp);
 
 server.register(fastifySecureSession, {
   key: Buffer.from(process.env.SESSION_SECRET_HEX, "hex"),
+  cookie: {
+    secure: isProd,
+    httpOnly: true,
+    path: "/",
+  },
 });
 
 server.register(fastifyFormBody);

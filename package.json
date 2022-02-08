@@ -12,8 +12,8 @@
     "_build:js": "rimraf dist && tsc",
     "_watch:js": "tsc -w",
     "_nodemon": "nodemon -q -w dist -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main",
-    "build": "concurrently --raw \"yarn _build:js\" \"yarn _build:css\"",
-    "dev": "concurrently -k --raw \"yarn _watch:js\" \"yarn _nodemon\" \"yarn _watch:css\"",
+    "build": "concurrently --raw \"npm run _build:js\" \"npm run _build:css\"",
+    "dev": "concurrently -k --raw \"npm run _watch:js\" \"npm run _nodemon\" \"npm run _watch:css\"",
     "start": "node -r dotenv/config --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main.js"
   },
   "dependencies": {
@@ -29,6 +29,7 @@
     "fastify-secure-session": "^3.0.0",
     "fastify-static": "^4.5.0",
     "jwt-decode": "^3.1.2",
+    "pino-pretty": "^7.5.1",
     "qs": "^6.10.1",
     "simple-oauth2": "^4.3.0",
     "stripe": "^8.197.0"
