@@ -30,7 +30,15 @@ diContainer.loadModules(
 
 const isProd = process.env.NODE_ENV === "production";
 const server = fastify({
-  logger: { level: isProd ? "info" : "trace", prettyPrint: !isProd },
+  logger: {
+    level: isProd ? "info" : "trace",
+    prettyPrint: isProd
+      ? false
+      : {
+          colorize: true,
+          ignore: "req.hostname,req.remoteAddress,req.remotePort",
+        },
+  },
 });
 
 server.register(fastifyBlipp);
