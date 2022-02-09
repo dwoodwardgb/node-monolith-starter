@@ -11,6 +11,7 @@ const DEFAULT_REDIRECT_AFTER_LOGIN = "/";
 const LOGIN_ROUTE = "/login";
 const WEBHOOK_ROUTE = "/oauth/webhook";
 const WEBHOOK_URL = `${process.env.PUBLIC_URL}${WEBHOOK_ROUTE}`;
+const HOME_URL = `${process.env.PUBLIC_URL}/`;
 export const USER_SESSION_FIELD_NAME = "user";
 
 const createAuthPlugin = ({
@@ -76,7 +77,7 @@ const createAuthPlugin = ({
         reply.redirect(
           `${process.env.AUTH0_DOMAIN}/v2/logout?${qs.stringify({
             client_id: process.env.AUTH0_CLIENT_ID,
-            returnTo: "http://localhost:3000/", // TODO can this be derived
+            returnTo: HOME_URL,
           })}`
         );
       });
